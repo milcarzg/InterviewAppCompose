@@ -1,12 +1,16 @@
 package dk.trackman.androidnative.designsystem.component
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 
@@ -23,9 +27,13 @@ fun TdsTopAppBar(
 ) {
     TopAppBar(
         title = {
-            Text(
-                text = stringResource(id = titleRes).uppercase()
-            )
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center){
+                Text(
+                    text = stringResource(id = titleRes).uppercase()
+                )
+            }
         },
         navigationIcon = {
             if (navigationIcon != null) {
