@@ -1,12 +1,12 @@
-package dk.trackman.androidnative.feature.friends
+package dk.trackman.androidnative.feature.friends.ui
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dk.trackman.androidnative.network.api.FriendApi
-import dk.trackman.androidnative.network.model.Friend
+import dk.trackman.androidnative.feature.friends.data.api.FriendApi
+import dk.trackman.androidnative.feature.friends.data.model.Friend
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
