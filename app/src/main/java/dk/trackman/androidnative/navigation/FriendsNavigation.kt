@@ -2,6 +2,7 @@ package dk.trackman.androidnative.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import dk.trackman.androidnative.feature.friends.ui.FriendsScreenRoute
@@ -12,9 +13,8 @@ fun NavController.navigateToFriends(navOptions: NavOptions? = null) {
     this.navigate(FRIENDS_ROUTE, navOptions)
 }
 
-fun NavGraphBuilder.friendsScreen(
-) {
+fun NavGraphBuilder.friendsScreen(navController: NavHostController) {
     composable(route = FRIENDS_ROUTE) {
-        FriendsScreenRoute()
+        FriendsScreenRoute(navController)
     }
 }

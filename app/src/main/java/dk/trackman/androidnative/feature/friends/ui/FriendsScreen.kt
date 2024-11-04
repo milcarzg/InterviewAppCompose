@@ -16,14 +16,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.input.ImeAction
@@ -41,18 +39,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import dk.trackman.androidnative.designsystem.theme.AndroidCodingChallengeTheme
 import dk.trackman.androidnative.designsystem.theme.SecondaryGrey
 import dk.trackman.androidnative.designsystem.theme.Typography
 import dk.trackman.androidnative.feature.friends.ui.components.FriendItem
-import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
+import dk.trackman.androidnative.navigation.navigateToProfile
 
 @Composable
-fun FriendsScreenRoute()
+fun FriendsScreenRoute(navController: NavController)
 {
     AndroidCodingChallengeTheme {
         Surface {
-            FriendsScreenContent()
+            FriendsScreenContent(navController = navController)
         }
     }
 }
@@ -60,7 +59,7 @@ fun FriendsScreenRoute()
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel()) {
+private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), navController: NavController?) {
     viewModel.fetchFriends()
     val friends by viewModel.friends.observeAsState(initial = emptyList())
     val (friendsList, othersList) = friends.partition { it.isFriend }
@@ -105,7 +104,8 @@ private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel()) 
                     }
                     items(othersList.filter { it.fullName.contains(searchQuery.value, ignoreCase = true) }) { friend ->
                         FriendItem(friend = friend, onClick = {
-                            // Handle friend click if needed
+                            navController?.navigateToProfile(friend.nickName)
+                            println("User clicked: ${friend.nickName}")
                         })
                     }
                     item {
@@ -113,7 +113,8 @@ private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel()) 
                     }
                     items(friendsList.filter { it.fullName.contains(searchQuery.value, ignoreCase = true) }) { friend ->
                         FriendItem(friend = friend, onClick = {
-                            // Handle friend click if needed
+                            navController?.navigateToProfile(friend.nickName)
+                            println("User clicked: ${friend.nickName}")
                         })
                     }
                 }

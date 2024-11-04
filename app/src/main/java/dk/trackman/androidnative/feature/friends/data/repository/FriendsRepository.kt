@@ -7,8 +7,25 @@ import javax.inject.Inject
 class FriendsRepository @Inject constructor(
     private val friendApi: FriendApi
 ) {
+    // In-memory cache of friends list
+    private var friendsCache: List<Friend>? = null
+
+    // Get friends list from network or cache
     suspend fun getFriends(): List<Friend> {
-        // Make a network call using Retrofit and return the list of friends
-        return friendApi.getFriends().friends
+        // Return the cached list if it is available
+        if (friendsCache != null) {
+            return friendsCache!!
+        }
+
+        // Otherwise, make the network call to fetch friends and update the cache
+        val fetchedFriends = friendApi.getFriends().friends
+        friendsCache = fetchedFriends
+        return fetchedFriends
+    }
+
+    // Get a specific friend by nickname
+    fun getFriend(nickname: String): Friend? {
+        // Make sure to access the cached data to avoid re-fetching from the network
+        return friendsCache?.find { it.nickName.equals(nickname, ignoreCase = true) }
     }
 }
