@@ -23,10 +23,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun FriendItem(friend: Friend, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun FriendItem(friend: FriendUI, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
@@ -43,7 +44,7 @@ fun FriendItem(friend: Friend, modifier: Modifier = Modifier, onClick: () -> Uni
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column {
-            Text(text = "${friend.firstName} ${friend.lastName}", color = TextGrey, fontSize = 16.sp, fontWeight = FontWeight.Medium)
+            Text(text = friend.fullName, color = TextGrey, fontSize = 16.sp, fontWeight = FontWeight.Medium)
             Text(text = friend.nickName, fontSize = 14.sp, color = LightGrey)
         }
     }
