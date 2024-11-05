@@ -42,16 +42,28 @@ import com.bumptech.glide.integration.compose.GlideImage
 import dk.trackman.androidnative.R
 import dk.trackman.androidnative.feature.friends.ui.viewmodel.FriendsViewModel
 import androidx.compose.foundation.Image
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.navigation.NavController
+import dk.trackman.androidnative.designsystem.icon.AppIcons.ChevronLeft
 
 @Composable
-fun ProfileScreenRoute(nickName: String)
+fun ProfileScreenRoute(nickName: String, navController: NavController)
 {
-    ProfileScreenContent(nickName= nickName)
+    ProfileScreenContent(nickName= nickName, navController = navController)
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
+@OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreenContent(nickName: String, viewModel: FriendsViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
+fun ProfileScreenContent(nickName: String, navController: NavController, viewModel: FriendsViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
 
     val friends by viewModel.friends
     val friend = friends.find { it.nickName == nickName }
@@ -61,62 +73,91 @@ fun ProfileScreenContent(nickName: String, viewModel: FriendsViewModel = hiltVie
 
     println("Screen for user: $friend")
     friend?.let {
-        println("Screen for user: ${it.nickName}")
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-        ) {
-            Image(painter = background,
-                contentDescription = "Background")
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(64.dp))
-                GlideImage(
-                    model = friend.profilePictureUrl,
-                    contentDescription = "User Avatar",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(120.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color.White, CircleShape)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = friend.fullName,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                )
-                Text(
-                    text = friend.nickName,
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
-                Text(
-                    text = "${friend.age} yrs",
-                    fontSize = 16.sp,
-                    color = Color.Gray
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "You can play recorded Virtual Golf rounds with ${friend.fullName} in TrackMan Performance Studio (TPS). More Friends functionalities will be available soon.",
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 32.dp)
-                )
-                Spacer(modifier = Modifier.height(32.dp))
-                Image(painter = graphic,
-                    contentDescription = "graphic")
-
-            }
+        Box (modifier = Modifier.fillMaxSize()) {
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = {
+                            Text(text = "Profile")
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(
+                                    imageVector = ChevronLeft,
+                                    contentDescription = "Back"
+                                )
+                            }
+                        },
+                        actions = {
+                            IconButton(onClick = {/*TODO Navigate somewhere*/ }) {
+                                Icon(
+                                    imageVector = Icons.Default.MoreVert,
+                                    contentDescription = "More Options"
+                                )
+                            }
+                        }
+                    )
+                },
+                content = { innerPadding ->
+                    Box(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(0.dp, innerPadding.calculateTopPadding(), 0.dp, 0.dp)
+                    ) {
+                        Image(painter = background,
+                            contentDescription = "Background",
+                            modifier = Modifier.fillMaxSize())
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Spacer(modifier = Modifier.height(64.dp))
+                            GlideImage(
+                                model = friend.profilePictureUrl,
+                                contentDescription = "User Avatar",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(120.dp)
+                                    .clip(CircleShape)
+                                    .border(2.dp, Color.White, CircleShape)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = friend.fullName,
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black
+                            )
+                            Text(
+                                text = friend.nickName,
+                                fontSize = 16.sp,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "${friend.age} yrs",
+                                fontSize = 16.sp,
+                                color = Color.Gray
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = "You can play recorded Virtual Golf rounds with ${friend.fullName} in TrackMan Performance Studio (TPS). More Friends functionalities will be available soon.",
+                                fontSize = 14.sp,
+                                color = Color.Gray,
+                                textAlign = TextAlign.Center,
+                                modifier = Modifier.padding(horizontal = 32.dp)
+                            )
+                            Spacer(modifier = Modifier.height(32.dp))
+                            Image(
+                                painter = graphic,
+                                contentDescription = "graphic"
+                            )
+                        }
+                    }
+                }
+            )
         }
     } ?: run {
-        // Loading or error state can be handled here
         Text(text = "Loading friend details...", style = MaterialTheme.typography.bodyMedium)
     }
 }
