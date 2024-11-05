@@ -3,6 +3,7 @@ package dk.trackman.androidnative.feature.friends.ui.screen
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.provider.ContactsContract.Profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -53,7 +54,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.navigation.NavController
+import dk.trackman.androidnative.designsystem.component.TdsTopAppBar
 import dk.trackman.androidnative.designsystem.icon.AppIcons.ChevronLeft
+import dk.trackman.androidnative.designsystem.icon.AppIcons.MoreVert
 
 @Composable
 fun ProfileScreenRoute(nickName: String, navController: NavController)
@@ -76,26 +79,14 @@ fun ProfileScreenContent(nickName: String, navController: NavController, viewMod
         Box (modifier = Modifier.fillMaxSize()) {
             Scaffold(
                 topBar = {
-                    TopAppBar(
-                        title = {
-                            Text(text = "Profile")
-                        },
-                        navigationIcon = {
-                            IconButton(onClick = { navController.popBackStack() }) {
-                                Icon(
-                                    imageVector = ChevronLeft,
-                                    contentDescription = "Back"
-                                )
-                            }
-                        },
-                        actions = {
-                            IconButton(onClick = {/*TODO Navigate somewhere*/ }) {
-                                Icon(
-                                    imageVector = Icons.Default.MoreVert,
-                                    contentDescription = "More Options"
-                                )
-                            }
-                        }
+                    TdsTopAppBar(
+                        titleRes = R.string.Profile,
+                        navigationIcon = ChevronLeft,
+                        actionIcon = MoreVert,
+                        navigationIconContentDescription = "Back",
+                        actionIconContentDescription = "More Options",
+                        onNavigationClick = {navController.popBackStack()},
+                        onActionClick = {/*TODO Navigate somewhere*/ }
                     )
                 },
                 content = { innerPadding ->

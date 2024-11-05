@@ -39,6 +39,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import dk.trackman.androidnative.R
+import dk.trackman.androidnative.designsystem.component.TdsTopAppBar
+import dk.trackman.androidnative.designsystem.icon.AppIcons.ChevronLeft
+import dk.trackman.androidnative.designsystem.icon.AppIcons.MoreVert
 import dk.trackman.androidnative.designsystem.theme.AndroidCodingChallengeTheme
 import dk.trackman.androidnative.designsystem.theme.SecondaryGrey
 import dk.trackman.androidnative.designsystem.theme.Typography
@@ -66,18 +70,8 @@ private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), 
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = "Friends",
-                            style = Typography.headlineMedium
-                        )
-                    }
-                }
+            TdsTopAppBar(
+                titleRes = R.string.Friends,
             )
         },
         content = { paddingValues ->
