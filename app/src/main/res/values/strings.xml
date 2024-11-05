@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Android Coding Challenge</string>
     <string name="dummy_text">Do something here?</string>
-    <string name="Friends">FRIENDS</string>
-    <string name="Profile">Profile</string>
+    <string name="friends">Friends</string>
+    <string name="profile">Profile</string>
+    <string name="loading_friend_details">Loading friend details…</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="yrs">%1$s yrs</string>
+    <string name="profile_long_text">You can play recorded Virtual Golf rounds with %1$s in TrackMan Performance Studio (TPS). More Friends functionalities will be available soon.</string>
+    <string name="empty_string"></string>
 </resources>

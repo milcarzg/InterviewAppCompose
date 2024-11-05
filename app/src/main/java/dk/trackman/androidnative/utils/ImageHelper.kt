@@ -14,36 +14,40 @@ import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
+//Example of helper classes that might be needed for your project
 class ImageHelper {
 
-    @Composable
-    fun LoadImageFromAssets(fileName: String) {
-        val context = LocalContext.current
-        val imageBitmap: Bitmap? = remember {
-            loadBitmapFromAssets(context, fileName)
-        }
+    companion object {
 
-        Box(
-            modifier = Modifier.size(200.dp)
-        ) {
-            imageBitmap?.let {
-                Image(
-                    painter = BitmapPainter(it.asImageBitmap()),
-                    contentDescription = "Image from Assets",
-                    modifier = Modifier.matchParentSize()
-                )
+        @Composable
+        fun LoadImageFromAssets(fileName: String) {
+            val context = LocalContext.current
+            val imageBitmap: Bitmap? = remember {
+                loadBitmapFromAssets(context, fileName)
+            }
+
+            Box(
+                modifier = Modifier.size(200.dp)
+            ) {
+                imageBitmap?.let {
+                    Image(
+                        painter = BitmapPainter(it.asImageBitmap()),
+                        contentDescription = "Image from Assets",
+                        modifier = Modifier.matchParentSize()
+                    )
+                }
             }
         }
-    }
 
-    fun loadBitmapFromAssets(context: Context, fileName: String): Bitmap? {
-        return try {
-            val assetManager = context.assets
-            val inputStream = assetManager.open(fileName)
-            BitmapFactory.decodeStream(inputStream)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
+        fun loadBitmapFromAssets(context: Context, fileName: String): Bitmap? {
+            return try {
+                val assetManager = context.assets
+                val inputStream = assetManager.open(fileName)
+                BitmapFactory.decodeStream(inputStream)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
         }
     }
 }
