@@ -13,3 +13,5 @@ val Pink40 = Color(0xFF7D5260)
 val LightGrey = Color(0xFFA0A0A0)
 val SecondaryGrey = Color(0xFFE0E0E0)
 val TextGrey = Color(0xFF414141)
+
+val Transparent = Color(0x00000000)

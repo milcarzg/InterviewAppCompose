@@ -1,7 +1,11 @@
-package dk.trackman.androidnative.feature.friends.bl.mapper
+package dk.trackman.androidnative.feature.friends.domain
 
 import dk.trackman.androidnative.feature.friends.data.model.Friend
 import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.Period
+import java.time.format.DateTimeFormatter
 
 fun Friend.toFriendUI(): FriendUI {
     val fullName = "$firstName $lastName"
@@ -18,6 +22,9 @@ fun Friend.toFriendUI(): FriendUI {
 }
 
 fun calculateAge(dateOfBirth: String): String {
-    // Implement logic of calculating the age from dateOfBirth
-    return "30 years old" // Placeholder
+    val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+    val birthDate = OffsetDateTime.parse(dateOfBirth, formatter).toLocalDate()
+    val currentDate = LocalDate.now()
+    val age = Period.between(birthDate, currentDate).years
+    return age.toString() // Placeholder
 }

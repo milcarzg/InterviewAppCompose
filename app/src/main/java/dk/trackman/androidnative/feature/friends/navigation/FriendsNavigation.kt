@@ -1,4 +1,4 @@
-package dk.trackman.androidnative.navigation
+package dk.trackman.androidnative.feature.friends.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

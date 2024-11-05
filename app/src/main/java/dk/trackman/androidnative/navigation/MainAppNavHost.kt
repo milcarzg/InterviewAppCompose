@@ -2,6 +2,8 @@ package dk.trackman.androidnative.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
+import dk.trackman.androidnative.feature.friends.navigation.FRIENDS_ROUTE
+import dk.trackman.androidnative.feature.friends.navigation.friendsScreen
 import dk.trackman.androidnative.main.MainAppState
 
 @Composable

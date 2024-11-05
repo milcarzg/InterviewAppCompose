@@ -1,11 +1,11 @@
-package dk.trackman.androidnative.feature.friends.ui.viewmodel
+package dk.trackman.androidnative.feature.friends.ui.viewmodels
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dk.trackman.androidnative.feature.friends.bl.mapper.toFriendUI
+import dk.trackman.androidnative.feature.friends.domain.toFriendUI
 import dk.trackman.androidnative.feature.friends.data.model.Friend
 import dk.trackman.androidnative.feature.friends.data.repository.FriendsRepository
 import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
