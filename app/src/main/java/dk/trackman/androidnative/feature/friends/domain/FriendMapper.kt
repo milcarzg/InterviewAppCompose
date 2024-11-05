@@ -1,6 +1,6 @@
 package dk.trackman.androidnative.feature.friends.domain
 
-import dk.trackman.androidnative.feature.friends.data.model.Friend
+import dk.trackman.androidnative.feature.friends.data.models.Friend
 import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
 import java.time.LocalDate
 import java.time.OffsetDateTime

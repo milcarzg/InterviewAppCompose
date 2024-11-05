@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dk.trackman.androidnative.feature.friends.domain.toFriendUI
-import dk.trackman.androidnative.feature.friends.data.model.Friend
+import dk.trackman.androidnative.feature.friends.data.models.Friend
 import dk.trackman.androidnative.feature.friends.data.repository.FriendsRepository
 import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
 import kotlinx.coroutines.launch

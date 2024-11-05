@@ -1,4 +1,4 @@
-package dk.trackman.androidnative.feature.friends.data.model
+package dk.trackman.androidnative.feature.friends.data.models
 
 // Data classes representing a User
 data class Friend(
