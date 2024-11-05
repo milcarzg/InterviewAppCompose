@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import dk.trackman.androidnative.feature.friends.ui.FriendsScreenRoute
+import dk.trackman.androidnative.feature.friends.ui.screen.FriendsScreenRoute
 
 const val FRIENDS_ROUTE = "friends_route"
 

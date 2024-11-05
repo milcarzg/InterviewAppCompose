@@ -1,5 +1,9 @@
-package dk.trackman.androidnative.feature.friends.ui
+package dk.trackman.androidnative.feature.friends.ui.screen
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,14 +21,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -32,29 +39,35 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
+import dk.trackman.androidnative.R
+import dk.trackman.androidnative.feature.friends.ui.viewmodel.FriendsViewModel
+import androidx.compose.foundation.Image
 
 @Composable
-fun ProfileScreenRoute(nickname: String)
+fun ProfileScreenRoute(nickName: String)
 {
-    ProfileScreenContent(nickname = nickname)
+    ProfileScreenContent(nickName= nickName)
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileScreenContent(nickname: String, viewModel: ProfileViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
-    viewModel.fetchFriendByNickname(nickname)
-    // Collect the friend state
-    val friend by viewModel.friend.collectAsState()
-    friend?.let {
-        println("ProfileScreenRoute for user: " + friend?.nickName)
-        println("Screen for user: ${it.nickName}")
+fun ProfileScreenContent(nickName: String, viewModel: FriendsViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
 
+    val friends by viewModel.friends
+    val friend = friends.find { it.nickName == nickName }
+    val background = painterResource(R.drawable.profile_background)
+    val graphic = painterResource(R.drawable.graphic)
+
+
+    println("Screen for user: $friend")
+    friend?.let {
+        println("Screen for user: ${it.nickName}")
         Box(
             modifier = modifier
                 .fillMaxSize()
-                .background(brush = Brush.verticalGradient(listOf(Color(0xFFFFA726), Color.White)))
         ) {
+            Image(painter = background,
+                contentDescription = "Background")
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -63,7 +76,7 @@ fun ProfileScreenContent(nickname: String, viewModel: ProfileViewModel = hiltVie
             ) {
                 Spacer(modifier = Modifier.height(64.dp))
                 GlideImage(
-                    model = it.profilePictureUrl,
+                    model = friend.profilePictureUrl,
                     contentDescription = "User Avatar",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -73,50 +86,33 @@ fun ProfileScreenContent(nickname: String, viewModel: ProfileViewModel = hiltVie
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = it.fullName,
+                    text = friend.fullName,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 )
                 Text(
-                    text = it.nickName,
+                    text = friend.nickName,
                     fontSize = 16.sp,
                     color = Color.Gray
                 )
                 Text(
-                    text = "${it.age} yrs",
+                    text = "${friend.age} yrs",
                     fontSize = 16.sp,
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = "You can play recorded Virtual Golf rounds with ${it.fullName} in TrackMan Performance Studio (TPS). More Friends functionalities will be available soon.",
+                    text = "You can play recorded Virtual Golf rounds with ${friend.fullName} in TrackMan Performance Studio (TPS). More Friends functionalities will be available soon.",
                     fontSize = 14.sp,
                     color = Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 32.dp)
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    StatsCard(
-                        title = "AVG SCORES BY PAR",
-                        value = "3.9  4.1  4.9",
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatsCard(
-                        title = "FAIRWAYS HIT",
-                        value = "58%",
-                        modifier = Modifier.weight(1f)
-                    )
-                    StatsCard(
-                        title = "LONGEST DRIVE",
-                        value = "198.5m",
-                        modifier = Modifier.weight(1f)
-                    )
-                }
+                Image(painter = graphic,
+                    contentDescription = "graphic")
+
             }
         }
     } ?: run {
@@ -124,6 +120,40 @@ fun ProfileScreenContent(nickname: String, viewModel: ProfileViewModel = hiltVie
         Text(text = "Loading friend details...", style = MaterialTheme.typography.bodyMedium)
     }
 }
+
+@Composable
+fun LoadImageFromAssets(fileName: String) {
+    val context = LocalContext.current
+    val imageBitmap: Bitmap? = remember {
+        loadBitmapFromAssets(context, fileName)
+    }
+
+    Box(
+        modifier = Modifier.size(200.dp)
+    ) {
+        imageBitmap?.let {
+            Image(
+                painter = BitmapPainter(it.asImageBitmap()),
+                contentDescription = "Image from Assets",
+                modifier = Modifier.matchParentSize()
+            )
+        }
+    }
+}
+
+fun loadBitmapFromAssets(context: Context, fileName: String): Bitmap? {
+    return try {
+        val assetManager = context.assets
+        val inputStream = assetManager.open(fileName)
+        BitmapFactory.decodeStream(inputStream)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
+
+
 
 @Composable
 fun StatsCard(title: String, value: String, modifier: Modifier = Modifier) {

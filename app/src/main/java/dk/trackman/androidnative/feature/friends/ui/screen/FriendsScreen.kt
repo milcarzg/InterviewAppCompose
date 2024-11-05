@@ -1,4 +1,4 @@
-package dk.trackman.androidnative.feature.friends.ui
+package dk.trackman.androidnative.feature.friends.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -28,7 +28,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,6 +42,7 @@ import androidx.navigation.NavController
 import dk.trackman.androidnative.designsystem.theme.AndroidCodingChallengeTheme
 import dk.trackman.androidnative.designsystem.theme.SecondaryGrey
 import dk.trackman.androidnative.designsystem.theme.Typography
+import dk.trackman.androidnative.feature.friends.ui.viewmodel.FriendsViewModel
 import dk.trackman.androidnative.feature.friends.ui.components.FriendItem
 import dk.trackman.androidnative.navigation.navigateToProfile
 
@@ -60,8 +60,7 @@ fun FriendsScreenRoute(navController: NavController)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), navController: NavController?) {
-    viewModel.fetchFriends()
-    val friends by viewModel.friends.observeAsState(initial = emptyList())
+    val friends by viewModel.friends
     val (friendsList, othersList) = friends.partition { it.isFriend }
     val searchQuery = remember { mutableStateOf("") }
 
