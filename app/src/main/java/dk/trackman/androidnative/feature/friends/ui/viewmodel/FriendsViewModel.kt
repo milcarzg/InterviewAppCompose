@@ -1,14 +1,11 @@
-package dk.trackman.androidnative.feature.friends.ui
+package dk.trackman.androidnative.feature.friends.ui.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dk.trackman.androidnative.feature.friends.bl.mapper.toFriendUI
-import dk.trackman.androidnative.feature.friends.data.api.FriendApi
 import dk.trackman.androidnative.feature.friends.data.model.Friend
 import dk.trackman.androidnative.feature.friends.data.repository.FriendsRepository
 import dk.trackman.androidnative.feature.friends.ui.models.FriendUI
@@ -21,20 +18,22 @@ class FriendsViewModel @Inject constructor(
     private val friendsRepository: FriendsRepository
 ) : ViewModel() {
 
-    private val _friends = MutableLiveData<List<FriendUI>>()
-    val friends: LiveData<List<FriendUI>> get() = _friends
+    private val _friends = mutableStateOf<List<FriendUI>>(emptyList())
+    val friends: State<List<FriendUI>> get() = _friends
 
-    fun fetchFriends() {
+    init {
+        println("FriendsViewModel initialized")
+        fetchFriends()
+    }
+
+    private fun fetchFriends() {
         viewModelScope.launch {
             try {
                 // Fetching friends from repository
                 val friendList: List<Friend> = friendsRepository.getFriends()
 
                 // Transforming to FriendUI using the mapper extension function
-                val friendUIList = friendList.map { it.toFriendUI() }
-
-                // Posting transformed list to LiveData
-                _friends.postValue(friendUIList)
+                _friends.value = friendList.map { it.toFriendUI() }
 
             } catch (e: Exception) {
                 // Handle the exception
