@@ -77,7 +77,13 @@ fun ProfileScreenContent(nickName: String, navController: NavController, viewMod
     println("Screen for user: $friend")
     friend?.let {
         Box (modifier = Modifier.fillMaxSize()) {
+            Image(painter = background,
+                contentDescription = "Background",
+                modifier = Modifier.fillMaxSize())
+           }
             Scaffold(
+                //modifier = Modifier.background(Color.Black),
+
                 topBar = {
                     TdsTopAppBar(
                         titleRes = R.string.Profile,
@@ -89,15 +95,16 @@ fun ProfileScreenContent(nickName: String, navController: NavController, viewMod
                         onActionClick = {/*TODO Navigate somewhere*/ }
                     )
                 },
+                containerColor = Color.Transparent,
                 content = { innerPadding ->
                     Box(
                         modifier = modifier
                             .fillMaxSize()
                             .padding(0.dp, innerPadding.calculateTopPadding(), 0.dp, 0.dp)
                     ) {
-                        Image(painter = background,
-                            contentDescription = "Background",
-                            modifier = Modifier.fillMaxSize())
+//                        Image(painter = background,
+//                            contentDescription = "Background",
+//                            modifier = Modifier.fillMaxSize())
                         Column(
                             modifier = Modifier
                                 .fillMaxSize(),
@@ -147,7 +154,6 @@ fun ProfileScreenContent(nickName: String, navController: NavController, viewMod
                     }
                 }
             )
-        }
     } ?: run {
         Text(text = "Loading friend details...", style = MaterialTheme.typography.bodyMedium)
     }
