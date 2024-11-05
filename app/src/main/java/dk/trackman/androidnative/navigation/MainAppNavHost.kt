@@ -17,6 +17,6 @@ fun MainAppNavHost(
     )
     {
         friendsScreen(navController)
-        profileScreen()
+        profileScreen(navController)
     }
 }
