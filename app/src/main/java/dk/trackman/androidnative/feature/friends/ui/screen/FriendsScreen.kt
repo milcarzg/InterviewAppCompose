@@ -18,14 +18,12 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,12 +40,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import dk.trackman.androidnative.R
 import dk.trackman.androidnative.designsystem.component.TdsTopAppBar
-import dk.trackman.androidnative.designsystem.icon.AppIcons.ChevronLeft
-import dk.trackman.androidnative.designsystem.icon.AppIcons.MoreVert
 import dk.trackman.androidnative.designsystem.theme.AndroidCodingChallengeTheme
+import dk.trackman.androidnative.designsystem.theme.LightGrey
 import dk.trackman.androidnative.designsystem.theme.SecondaryGrey
-import dk.trackman.androidnative.designsystem.theme.Typography
-import dk.trackman.androidnative.feature.friends.ui.viewmodel.FriendsViewModel
+import dk.trackman.androidnative.feature.friends.ui.viewmodels.FriendsViewModel
 import dk.trackman.androidnative.feature.friends.ui.components.FriendItem
 import dk.trackman.androidnative.navigation.navigateToProfile
 
@@ -60,7 +57,6 @@ fun FriendsScreenRoute(navController: NavController)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), navController: NavController?) {
@@ -71,7 +67,7 @@ private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), 
     Scaffold(
         topBar = {
             TdsTopAppBar(
-                titleRes = R.string.Friends,
+                titleRes = R.string.friends,
             )
         },
         content = { paddingValues ->
@@ -86,14 +82,12 @@ private fun FriendsScreenContent(viewModel: FriendsViewModel = hiltViewModel(), 
                     onQueryChanged = { searchQuery.value = it },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
                 )
-
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     item {
-                        SectionTitle(title= "Recently Played")
+                        SectionTitle(title= stringResource(R.string.recently_played))
                     }
                     items(othersList.filter { it.fullName.contains(searchQuery.value, ignoreCase = true) }) { friend ->
                         FriendItem(friend = friend, onClick = {
@@ -125,7 +119,7 @@ fun SearchBar(query: String, onQueryChanged: (String) -> Unit, modifier: Modifie
         modifier = modifier
             .background(SecondaryGrey, MaterialTheme.shapes.medium)
             .padding(vertical = 8.dp)
-            .height(48.dp)
+            .height(36.dp)
             .fillMaxWidth(),
         singleLine = true,
         textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
@@ -168,7 +162,8 @@ fun SearchBar(query: String, onQueryChanged: (String) -> Unit, modifier: Modifie
 fun SectionTitle(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
-        fontSize = 20.sp,
+        fontSize = 15.sp,
+        color = LightGrey,
         fontWeight = FontWeight.SemiBold,
         modifier = modifier.padding(vertical = 8.dp)
     )

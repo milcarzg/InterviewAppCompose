@@ -1,7 +1,7 @@
 package dk.trackman.androidnative.feature.friends.data.repository
 
 import dk.trackman.androidnative.feature.friends.data.api.FriendApi
-import dk.trackman.androidnative.feature.friends.data.model.Friend
+import dk.trackman.androidnative.feature.friends.data.models.Friend
 import javax.inject.Inject
 
 class FriendsRepository @Inject constructor(
